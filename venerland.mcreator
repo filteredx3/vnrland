@@ -9,13 +9,24 @@
       "locked_code": false,
       "ids": {},
       "registry_name": "vn_rweed"
+    },
+    {
+      "name": "VNRMaes",
+      "type": "mob",
+      "sortid": 2,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "vnr_maes"
     }
   ],
   "variable_elements": [],
   "sound_elements": [],
   "language_map": {
     "en_us": {
-      "block.venerland.vn_rweed": "Weed"
+      "item.venerland.vnr_maes": "VNR Maes Spawn Egg",
+      "block.venerland.vn_rweed": "Weed",
+      "entity.venerland.vnr_maes": "VNR Maes"
     }
   },
   "workspaceSettings": {
