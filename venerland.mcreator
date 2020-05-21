@@ -18,6 +18,27 @@
       "locked_code": false,
       "ids": {},
       "registry_name": "maes"
+    },
+    {
+      "name": "VNRweedPlantDestroyedByPlayer",
+      "type": "procedure",
+      "sortid": 3,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "vn_rweed_plant_destroyed_by_player",
+      "metadata": {
+        "dependencies": []
+      }
+    },
+    {
+      "name": "RifMountains",
+      "type": "biome",
+      "sortid": 2,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "rif_mountains"
     }
   ],
   "variable_elements": [],

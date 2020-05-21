@@ -22,7 +22,7 @@
     "customDrop": {
       "value": ""
     },
-    "dropAmount": 1,
+    "dropAmount": 3,
     "forceTicking": false,
     "isReplaceable": false,
     "colorOnMap": "GREEN",
@@ -33,10 +33,14 @@
     "aiPathNodeType": "DEFAULT",
     "flammability": 0,
     "fireSpreadSpeed": 0,
-    "frequencyOnChunks": 1,
+    "frequencyOnChunks": 6,
     "spawnWorldTypes": [
       "Surface"
     ],
-    "restrictionBiomes": []
+    "restrictionBiomes": [
+      {
+        "value": "CUSTOM:RifMountains"
+      }
+    ]
   }
 }
