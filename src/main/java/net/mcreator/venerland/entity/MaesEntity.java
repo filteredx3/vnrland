@@ -1,14 +1,53 @@
 
 package net.mcreator.venerland.entity;
 
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+
+import net.minecraft.world.World;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Hand;
+import net.minecraft.util.DamageSource;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.item.SpawnEggItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Item;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+
+import net.mcreator.venerland.VenerlandModElements;
+
+import java.util.Random;
+
 @VenerlandModElements.ModElement.Tag
 public class MaesEntity extends VenerlandModElements.ModElement {
-
 	public static EntityType entity = null;
-
 	public MaesEntity(VenerlandModElements instance) {
 		super(instance, 2);
-
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
@@ -17,11 +56,8 @@ public class MaesEntity extends VenerlandModElements.ModElement {
 		entity = (EntityType.Builder.<CustomEntity>create(CustomEntity::new, EntityClassification.MONSTER).setShouldReceiveVelocityUpdates(true)
 				.setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(CustomEntity::new).size(0.6f, 1.8f)).build("maes")
 						.setRegistryName("maes");
-
 		elements.entities.add(() -> entity);
-
 		elements.items.add(() -> new SpawnEggItem(entity, -1, -1, new Item.Properties().group(ItemGroup.MISC)).setRegistryName("maes"));
-
 	}
 
 	@SubscribeEvent
@@ -35,14 +71,10 @@ public class MaesEntity extends VenerlandModElements.ModElement {
 				}
 			};
 			customRender.addLayer(new BipedArmorLayer(customRender, new BipedModel(0.5f), new BipedModel(1)));
-
 			return customRender;
 		});
-
 	}
-
 	public static class CustomEntity extends MonsterEntity {
-
 		public CustomEntity(FMLPlayMessages.SpawnEntity packet, World world) {
 			this(entity, world);
 		}
@@ -51,24 +83,19 @@ public class MaesEntity extends VenerlandModElements.ModElement {
 			super(type, world);
 			experienceValue = 0;
 			setNoAI(false);
-
 			setCustomName(new StringTextComponent("M A E S"));
 			setCustomNameVisible(true);
-
 			enablePersistence();
-
 		}
 
 		@Override
 		protected void registerGoals() {
 			super.registerGoals();
-
 			this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false));
 			this.goalSelector.addGoal(2, new RandomWalkingGoal(this, 1));
 			this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
 			this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
 			this.goalSelector.addGoal(5, new SwimGoal(this));
-
 		}
 
 		@Override
@@ -129,20 +156,15 @@ public class MaesEntity extends VenerlandModElements.ModElement {
 		@Override
 		protected void registerAttributes() {
 			super.registerAttributes();
-
 			if (this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
 				this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6);
-
 			if (this.getAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
 				this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200);
-
 			if (this.getAttribute(SharedMonsterAttributes.ARMOR) != null)
 				this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0);
-
 			if (this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) == null)
 				this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
 			this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5);
-
 		}
 
 		@Override
@@ -157,17 +179,12 @@ public class MaesEntity extends VenerlandModElements.ModElement {
 				this.renderYawOffset = entity.rotationYaw;
 				this.rotationYawHead = entity.rotationYaw;
 				this.stepHeight = 1.0F;
-
 				if (entity instanceof LivingEntity) {
 					this.setAIMoveSpeed((float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
-
 					float forward = ((LivingEntity) entity).moveForward;
-
 					float strafe = ((LivingEntity) entity).moveStrafing;
-
 					super.travel(new Vec3d(strafe, 0, forward));
 				}
-
 				this.prevLimbSwingAmount = this.limbSwingAmount;
 				double d1 = this.getPosX() - this.prevPosX;
 				double d0 = this.getPosZ() - this.prevPosZ;
@@ -180,13 +197,11 @@ public class MaesEntity extends VenerlandModElements.ModElement {
 			}
 			this.stepHeight = 0.5F;
 			this.jumpMovementFactor = 0.02F;
-
 			super.travel(dir);
 		}
 
 		public void livingTick() {
 			super.livingTick();
-
 			int i = (int) this.getPosX();
 			int j = (int) this.getPosY();
 			int k = (int) this.getPosZ();
@@ -199,7 +214,5 @@ public class MaesEntity extends VenerlandModElements.ModElement {
 					world.addParticle(ParticleTypes.LARGE_SMOKE, d0, d1, d2, 0, 0, 0);
 				}
 		}
-
 	}
-
 }
