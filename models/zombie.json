@@ -1,0 +1,33 @@
+{
+  "version": 0.1,
+  "definitions": {
+    "mob.zombie": {
+      "width": 0.6,
+      "height": 1.8,
+      "lootTable": "entities/zombie",
+      "burnsInSun": true,
+      "onSpawn": {
+        "probability": 0.05,
+        "action": "setState Age:baby"
+      },
+      
+      "attributes": {
+        "health": 20,
+        "movementSpeed": 0.23,
+        "attackDamage": 3,
+        "followRange": 35,
+        "zombie.spawnReinforcements": {
+          "min": 0,
+          "default": 0,
+          "max": 0.1
+        }
+      },
+      
+      "sounds": {
+        "hurt": {
+          "sound": "mob.zombie.hurt"
+        }
+      }
+    }
+  }
+}

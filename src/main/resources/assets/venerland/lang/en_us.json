@@ -1,3 +1,5 @@
 {
-  "block.venerland.vn_rweed": "Weed"
+  "entity.venerland.maes": "Maes",
+  "block.venerland.vn_rweed": "Weed",
+  "item.venerland.maes": "Maes Spawn Egg"
 }
